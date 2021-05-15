@@ -1,4 +1,4 @@
-name: RuboCop
+name: lint
 
 on: [push, pull_request]
 
@@ -20,7 +20,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-rubocop-
       - name: Install gems
-        run: |
-          bundle install
+        run: bundle install
       - name: Run RuboCop
         run: bundle exec rubocop
