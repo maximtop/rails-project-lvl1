@@ -15,7 +15,7 @@ module HexletCode
       content = yield if block_given?
       attributes = build_attributes(kwargs)
       if content.nil?
-        attributes.length == 0 ? "<#{tag}>" : "<#{tag} #{attributes}>"
+        attributes.empty? ? "<#{tag}>" : "<#{tag} #{attributes}>"
       else
         attributes.empty? ? "<#{tag}>#{content}</#{tag}>" : "<#{tag} #{attributes}>#{content}</#{tag}>"
       end

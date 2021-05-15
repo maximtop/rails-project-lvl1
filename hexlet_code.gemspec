@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'This gem helps to generate forms'
   spec.homepage      = 'https://github.com/maximtop/rails-project-lvl1'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.4.0')
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/maximtop/rails-project-lvl1'
