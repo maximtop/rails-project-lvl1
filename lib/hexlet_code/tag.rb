@@ -17,7 +17,7 @@ module HexletCode
       if block.nil?
         attributes.empty? ? "<#{tag}>" : "<#{tag} #{attributes}>"
       else
-        attributes.empty? ? "<#{tag}>#{content}</#{tag}>" : "<#{tag} #{attributes}>#{content}</#{tag}>"
+        attributes.empty? ? "<#{tag}>\n    #{content}\n</#{tag}>" : "<#{tag} #{attributes}>\n    #{content}\n</#{tag}>"
       end
     end
   end
