@@ -6,7 +6,7 @@ module HexletCode
     def self.build_attributes(attributes)
       attributes_strings = []
       attributes.each do |key, value|
-        attributes_strings.push("#{key}=\"#{value}\"")
+        attributes_strings.push("#{key}=\"#{value}\"") unless value.nil?
       end
       attributes_strings.join(' ')
     end
@@ -17,7 +17,7 @@ module HexletCode
       if block.nil?
         attributes.empty? ? "<#{tag}>" : "<#{tag} #{attributes}>"
       else
-        attributes.empty? ? "<#{tag}>\n    #{content}\n</#{tag}>" : "<#{tag} #{attributes}>\n    #{content}\n</#{tag}>"
+        attributes.empty? ? "<#{tag}>#{content}</#{tag}>" : "<#{tag} #{attributes}>#{content}</#{tag}>"
       end
     end
   end
