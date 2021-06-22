@@ -25,7 +25,7 @@ class HexletCodeTest < Minitest::Test
 
   def test_render_paired_tag
     result = HexletCode::Tag.build('label') { 'Email' }
-    assert_equal("<label>Email</label>", result)
+    assert_equal('<label>Email</label>', result)
   end
 
   def test_render_paired_tag_with_attributes
