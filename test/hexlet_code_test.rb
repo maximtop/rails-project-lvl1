@@ -47,8 +47,8 @@ class HexletCodeTest < Minitest::Test
   def test_form_for_label
     user = User.new job: 'hexlet'
 
-    result = HexletCode.form_for user do |f|
-      f.input :name
+    result = HexletCode.form_for user, url: 'foo' do |f|
+      f.input :name, class: 'user-input'
       f.input :job
       f.submit
     end

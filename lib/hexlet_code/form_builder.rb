@@ -4,7 +4,7 @@ module HexletCode
   class FormBuilder
     attr_reader :fields
 
-    def initialize(user)
+    def initialize(user, **_kwargs)
       @user = user
     end
 
@@ -12,7 +12,8 @@ module HexletCode
       # check if user has fields
       return unless @user.members.include?(name)
 
-      (@fields ||= []) << { name: name, value: @user[name], as: options.fetch(:as, :input) }
+      updated_options = options.except(:as)
+      (@fields ||= []) << { name: name, value: @user[name], as: options.fetch(:as, :input), options: updated_options }
     end
 
     def submit(value = 'Save')
@@ -30,14 +31,26 @@ module HexletCode
       "#{indentation}#{tag_string}"
     end
 
-    def input_builder(name, value, indentation_level = 0)
-      label = label_builder(name)
-      input = Tag.build('input', type: 'text', name: name, value: value)
+    def input_builder(options)
+      name = options[:name]
+      value = options[:value]
+      indentation_level = options[:indentation_level]
+      rest_options = options.except(:name, :value, :indentation_level)
+      tag_options = { type: 'text', name: name, value: value }.merge(rest_options)
+      label = label_builder(options[:name])
+      input = Tag.build('input', **tag_options)
+
       "#{indent(label, indentation_level)}\n#{indent(input, indentation_level)}"
     end
 
-    def submit_builder(name, value, indentation_level = 0)
-      submit = Tag.build('input', type: 'submit', name: name, value: value)
+    def submit_builder(options)
+      name = options.fetch(:name)
+      value = options.fetch(:value)
+      indentation_level = options.fetch(:indentation_level, 0)
+
+      rest_options = options.except(:name, :value, :indentation_level)
+      tag_options = { type: 'submit', name: name, value: value }.merge(rest_options)
+      submit = Tag.build('input', **tag_options)
       indent(submit, indentation_level)
     end
 
@@ -49,18 +62,19 @@ module HexletCode
 
     def get_tag_builder(type)
       tags_builders = {
-        input: ->(name, value, indentation_level) { input_builder(name, value, indentation_level) },
-        submit: ->(name, value, indentation_level) { submit_builder(name, value, indentation_level) }
+        input: ->(options) { input_builder(options) },
+        submit: ->(options) { submit_builder(options) }
         # text: ->(name, value) { text_builder(name, value) }
       }
       tags_builders[type]
     end
 
-    def build
-      Tag.build('form', action: '#', method: 'post') do
+    def build(url = '#')
+      Tag.build('form', action: url, method: 'post') do
         result = @fields.map do |field|
           tag_builder = get_tag_builder(field[:as])
-          tag_builder.call(field[:name], field[:value], 1)
+          options = { name: field[:name], value: field[:value], indentation_level: 1 }.merge(field[:options] || {})
+          tag_builder.call(options)
         end.join("\n")
         "\n#{result}\n"
       end
