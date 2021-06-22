@@ -54,19 +54,26 @@ module HexletCode
       indent(submit, indentation_level)
     end
 
-    # def text_builder(name, value)
-    #   label = Tag.build('label', for: name) { name }
-    #   input = Tag.build('textarea', type: text, value: value, name: name)
-    #   "#{label}\n#{input}"
-    # end
+    def text_builder(options)
+      name = options.fetch(:name)
+      value = options.fetch(:value)
+      indentation_level = options.fetch(:indentation_level, 0)
+
+      rest_options = options.except(:name, :value, :indentation_level)
+      tag_options = { name: name }.merge(rest_options)
+
+      label = label_builder(name)
+      textarea = Tag.build('textarea', **tag_options) { value }
+      "#{indent(label, indentation_level)}\n#{indent(textarea, indentation_level)}"
+    end
 
     def get_tag_builder(type)
       tags_builders = {
         input: ->(options) { input_builder(options) },
-        submit: ->(options) { submit_builder(options) }
-        # text: ->(name, value) { text_builder(name, value) }
+        submit: ->(options) { submit_builder(options) },
+        text: ->(options) { text_builder(options) }
       }
-      tags_builders[type]
+      tags_builders[type] || tags_builders[:input]
     end
 
     def build(url = '#')

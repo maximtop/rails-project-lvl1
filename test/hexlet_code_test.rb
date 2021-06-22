@@ -56,4 +56,17 @@ class HexletCodeTest < Minitest::Test
     expected_result = fixture('./fixtures/test_form_for_label.html')
     assert_equal(expected_result, result)
   end
+
+  def test_form_with_textarea
+    user = User.new name: 'rob', job: 'hexlet'
+
+    result = HexletCode.form_for user, url: '#' do |f|
+      f.input :name
+      f.input :job, as: :text, rows: 50, cols: 50
+      f.submit 'Wow'
+    end
+
+    expected_result = fixture('./fixtures/test_form_with_textarea.html')
+    assert_equal(expected_result, result)
+  end
 end
