@@ -4,7 +4,7 @@ module HexletCode
   class FormBuilder
     attr_reader :fields
 
-    def initialize(user, **_kwargs)
+    def initialize(user)
       @user = user
     end
 
