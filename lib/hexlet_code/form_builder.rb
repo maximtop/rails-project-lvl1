@@ -4,16 +4,16 @@ module HexletCode
   class FormBuilder
     attr_reader :fields
 
-    def initialize(user)
-      @user = user
+    def initialize(form_object)
+      @form_object = form_object
     end
 
     def input(name, options = {})
-      # check if user has fields
-      return unless @user.members.include?(name)
+      # check if form_object has fields
+      return unless @form_object.respond_to?(name)
 
       updated_options = options.except(:as)
-      (@fields ||= []) << { name: name, value: @user[name], as: options.fetch(:as, :input), options: updated_options }
+      (@fields ||= []) << { name: name, value: @form_object[name], as: options.fetch(:as, :input), options: updated_options }
     end
 
     def submit(value = 'Save')
