@@ -35,8 +35,10 @@ module HexletCode
       name = options[:name]
       value = options[:value]
       indentation_level = options[:indentation_level]
+
       rest_options = options.except(:name, :value, :indentation_level)
       tag_options = { type: 'text', name: name, value: value }.merge(rest_options)
+
       label = label_builder(options[:name])
       input = Tag.build('input', **tag_options)
 
