@@ -6,6 +6,7 @@ module HexletCode
 
     def initialize(form_object)
       @form_object = form_object
+      @fields = []
     end
 
     def input(name, options = {})
@@ -13,7 +14,7 @@ module HexletCode
       return unless @form_object.respond_to?(name)
 
       updated_options = options.except(:as)
-      (@fields ||= []) << {
+      @fields << {
         name: name,
         value: @form_object[name],
         as: options.fetch(:as, :input),
@@ -22,7 +23,7 @@ module HexletCode
     end
 
     def submit(value = 'Save')
-      (@fields ||= []) << { name: 'commit', value: value, as: :submit }
+      @fields << { name: 'commit', value: value, as: :submit }
     end
 
     def label_builder(name)
