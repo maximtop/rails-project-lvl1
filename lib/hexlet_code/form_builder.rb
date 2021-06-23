@@ -13,7 +13,12 @@ module HexletCode
       return unless @form_object.respond_to?(name)
 
       updated_options = options.except(:as)
-      (@fields ||= []) << { name: name, value: @form_object[name], as: options.fetch(:as, :input), options: updated_options }
+      (@fields ||= []) << {
+        name: name,
+        value: @form_object[name],
+        as: options.fetch(:as, :input),
+        options: updated_options
+      }
     end
 
     def submit(value = 'Save')
