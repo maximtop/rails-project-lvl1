@@ -14,8 +14,8 @@ module HexletCode
       " #{attributes_string}"
     end
 
-    def self.build(tag, **kwargs, &_block)
-      content = yield if block_given?
+    def self.build(tag, **kwargs, &block)
+      content = block.call if block_given?
       attributes = build_attributes(kwargs)
 
       return "<#{tag}#{attributes}>" if content.nil?
