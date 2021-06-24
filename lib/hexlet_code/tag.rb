@@ -4,21 +4,23 @@ module HexletCode
   # Class used for tags building
   class Tag
     def self.build_attributes(attributes)
-      attributes_strings = []
-      attributes.each do |key, value|
-        attributes_strings.push("#{key}=\"#{value}\"") unless value.nil?
-      end
-      attributes_strings.join(' ')
+      attributes_string = attributes
+                          .map { |key, value| "#{key}=\"#{value}\"" unless value.nil? }
+                          .compact
+                          .join(' ')
+
+      return attributes_string if attributes_string.empty?
+
+      " #{attributes_string}"
     end
 
     def self.build(tag, **kwargs, &block)
-      content = block_given? ? yield : ''
+      content = block.call if block_given?
       attributes = build_attributes(kwargs)
-      if block.nil?
-        attributes.empty? ? "<#{tag}>" : "<#{tag} #{attributes}>"
-      else
-        attributes.empty? ? "<#{tag}>#{content}</#{tag}>" : "<#{tag} #{attributes}>#{content}</#{tag}>"
-      end
+
+      return "<#{tag}#{attributes}>" if content.nil?
+
+      "<#{tag}#{attributes}>#{content}</#{tag}>"
     end
   end
 end

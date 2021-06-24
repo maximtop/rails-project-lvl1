@@ -4,20 +4,26 @@ module HexletCode
   class FormBuilder
     attr_reader :fields
 
-    def initialize(user, **_kwargs)
-      @user = user
+    def initialize(form_object)
+      @form_object = form_object
+      @fields = []
     end
 
     def input(name, options = {})
-      # check if user has fields
-      return unless @user.members.include?(name)
+      # check if form_object has fields
+      return unless @form_object.respond_to?(name)
 
       updated_options = options.except(:as)
-      (@fields ||= []) << { name: name, value: @user[name], as: options.fetch(:as, :input), options: updated_options }
+      @fields << {
+        name: name,
+        value: @form_object[name],
+        as: options.fetch(:as, :input),
+        options: updated_options
+      }
     end
 
     def submit(value = 'Save')
-      (@fields ||= []) << { name: 'commit', value: value, as: :submit }
+      @fields << { name: 'commit', value: value, as: :submit }
     end
 
     def label_builder(name)
@@ -35,8 +41,10 @@ module HexletCode
       name = options[:name]
       value = options[:value]
       indentation_level = options[:indentation_level]
+
       rest_options = options.except(:name, :value, :indentation_level)
       tag_options = { type: 'text', name: name, value: value }.merge(rest_options)
+
       label = label_builder(options[:name])
       input = Tag.build('input', **tag_options)
 
