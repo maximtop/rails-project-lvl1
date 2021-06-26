@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module HexletCode
-  autoload(:Input, 'tag_builders/input')
-  autoload(:Textarea, 'tag_builders/textarea')
-  autoload(:Submit, 'tag_builders/submit')
+  autoload(:Input, 'hexlet_code/tag_builders/input')
+  autoload(:Textarea, 'hexlet_code/tag_builders/textarea')
+  autoload(:Submit, 'hexlet_code/tag_builders/submit')
 
   class FormBuilder
     attr_reader :fields

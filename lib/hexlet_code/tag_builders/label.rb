@@ -3,7 +3,7 @@
 module HexletCode
   class Label < TagBuilder
     def build
-      name = options[:name]
+      name = @options[:name]
       Tag.build('label', for: name) { name.capitalize }
     end
   end
